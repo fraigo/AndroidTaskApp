@@ -10,14 +10,15 @@ import java.util.UUID;
 public class DatabaseSchema {
     private String name;
     private ArrayList<String> fieldNames;
-    private UUID uuid;
     private HashMap<String,String> values;
+    private static final String UUID_FIELD = "uuid'";
 
     public DatabaseSchema(String name){
         this.name =name;
-        this.uuid=UUID.randomUUID();
         this.fieldNames = new ArrayList<String>();
+        addField(UUID_FIELD);
         this.values = new HashMap<String,String>();
+        setValue(UUID_FIELD, UUID.randomUUID().toString());
     }
 
 
@@ -44,6 +45,12 @@ public class DatabaseSchema {
         db.insert(name, null, getContentValues(values));
     }
 
+    public void update(SQLiteDatabase db){
+        db.update(name, getContentValues(values),
+                UUID_FIELD + " = ?",
+                new String[] { getUuid() });
+    }
+
     public void addField(String name){
         fieldNames.add(name);
     }
@@ -52,6 +59,14 @@ public class DatabaseSchema {
         if (fieldNames.contains(field)){
             values.put(field,value);
         }
+    }
+
+    public String getStringValue(String key){
+        return values.get(key).toString();
+    }
+
+    public String getUuid() {
+        return getStringValue(UUID_FIELD);
     }
 
     public String getName() {
