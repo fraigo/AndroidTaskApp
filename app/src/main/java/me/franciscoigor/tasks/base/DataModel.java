@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class DatabaseSchema {
+public class DataModel {
     private String name;
     private ArrayList<String> fieldNames;
     private HashMap<String,String> values;
-    private static final String UUID_FIELD = "uuid'";
+    private static final String FIELD_UUID = "uuid";
 
-    public DatabaseSchema(String name){
+    public DataModel(String name){
         this.name =name;
         this.fieldNames = new ArrayList<String>();
-        addField(UUID_FIELD);
+        addField(FIELD_UUID);
         this.values = new HashMap<String,String>();
-        setValue(UUID_FIELD, UUID.randomUUID().toString());
+        setValue(FIELD_UUID, UUID.randomUUID().toString());
     }
 
 
@@ -47,7 +47,7 @@ public class DatabaseSchema {
 
     public void update(SQLiteDatabase db){
         db.update(name, getContentValues(values),
-                UUID_FIELD + " = ?",
+                FIELD_UUID + " = ?",
                 new String[] { getUuid() });
     }
 
@@ -62,14 +62,23 @@ public class DatabaseSchema {
     }
 
     public String getStringValue(String key){
-        return values.get(key).toString();
+        return values.get(key);
     }
 
     public String getUuid() {
-        return getStringValue(UUID_FIELD);
+        return getStringValue(FIELD_UUID);
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "DataModel." +
+                name + " : " +
+                //" {" + fieldNames +
+                " }  (" + values +
+                ")";
     }
 }

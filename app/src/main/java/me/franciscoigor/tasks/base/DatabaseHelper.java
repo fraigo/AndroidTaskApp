@@ -5,24 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "data.db";
     private static SQLiteDatabase database;
-    private static ArrayList<DatabaseSchema> schemas;
+    private static ArrayList<DataModel> schemas;
 
     static {
-        schemas = new ArrayList<DatabaseSchema>();
+        schemas = new ArrayList<DataModel>();
     }
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
 
-    public static void addSchema(DatabaseSchema schema){
+    public static void addSchema(DataModel schema){
         schemas.add(schema);
     }
 
@@ -36,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        for (DatabaseSchema schema: schemas) {
+        for (DataModel schema: schemas) {
             System.out.println("Creating");
             schema.create(db);
         }
@@ -44,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        for (DatabaseSchema schema: schemas) {
+        for (DataModel schema: schemas) {
             try {
                 System.out.println("Creating "+schema.getName());
                 schema.create(db);

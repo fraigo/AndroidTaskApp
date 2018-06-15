@@ -1,47 +1,23 @@
 package me.franciscoigor.tasks.controllers;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-import java.util.HashMap;
-
-import me.franciscoigor.tasks.R;
 import me.franciscoigor.tasks.base.DatabaseHelper;
-import me.franciscoigor.tasks.base.Storage;
-import me.franciscoigor.tasks.models.TaskSchema;
+import me.franciscoigor.tasks.base.ListFragment;
+import me.franciscoigor.tasks.base.SingleFragmentActivity;
+import me.franciscoigor.tasks.models.TaskModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SingleFragmentActivity {
 
-
-
-    public MainActivity(){
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
-        // Restore instance state
-        Storage.loadStorage(savedInstanceState, this);
-        Storage.addInt("TEST",1);
-        // Setup database
-        DatabaseHelper.addSchema(new TaskSchema());
-        DatabaseHelper.getDatabase(this.getApplicationContext());
-    }
 
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        Storage.addInt("TEST",1);
-        // Save instance
-        Storage.saveStorage(savedInstanceState);
+    protected void addSchemas() {
+        DatabaseHelper.addSchema(new TaskModel());
     }
 
     @Override
-    protected void onStop() {
-        Storage.saveStorage(null);
-        super.onStop();
+    protected Fragment createFragment() {
+        return TaskListFragment.newInstance(null);
     }
 }
