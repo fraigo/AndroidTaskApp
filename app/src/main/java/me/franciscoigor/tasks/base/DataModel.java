@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class DataModel {
@@ -82,5 +83,20 @@ public class DataModel {
                 //" {" + fieldNames + "} "
                 " (" + values +
                 ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataModel dataModel = (DataModel) o;
+        return Objects.equals(name, dataModel.name) &&
+                Objects.equals(fieldNames, dataModel.fieldNames) &&
+                Objects.equals(values, dataModel.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, fieldNames, values);
     }
 }

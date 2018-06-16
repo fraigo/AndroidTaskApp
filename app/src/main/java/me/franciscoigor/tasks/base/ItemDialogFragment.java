@@ -49,12 +49,14 @@ public abstract class ItemDialogFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                System.out.println("ONCLICK");
-
-                                sendResult(Activity.RESULT_OK, item);
+                                onDialogResult(dialog, item);
                             }
                         })
                 .create();
+    }
+
+    public void onDialogResult(DialogInterface dialog, DataModel item) {
+        sendResult(Activity.RESULT_OK, item);
     }
 
     protected abstract String getDialogTitle(DataModel item);

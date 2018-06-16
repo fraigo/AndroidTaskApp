@@ -24,7 +24,7 @@
             android:textSize="24sp" />
 
         <ImageView
-            android:id="@+id/icon_secondary"
+            android:id="@+id/action_icon"
             android:layout_width="20dp"
             android:layout_height="50dp"
             android:layout_weight="1"

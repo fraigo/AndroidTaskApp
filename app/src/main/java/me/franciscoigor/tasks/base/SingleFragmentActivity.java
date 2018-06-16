@@ -26,6 +26,7 @@ public abstract class SingleFragmentActivity extends android.support.v4.app.Frag
         DatabaseHelper.getDatabase(this.getApplicationContext());
         //Load fragment content
         loadFragment(createFragment());
+
     }
 
 

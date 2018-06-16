@@ -60,6 +60,9 @@ public abstract class ListFragment extends Fragment {
         }
     }
 
+    public ItemAdapter getAdapter() {
+        return adapter;
+    }
 
     public class ListItemHolder extends ItemHolder {
 
@@ -80,7 +83,7 @@ public abstract class ListFragment extends Fragment {
     }
 
 
-    protected class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
+    public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
         private ArrayList<DataModel> list;
 
@@ -107,6 +110,10 @@ public abstract class ListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return list.size();
+        }
+
+        public boolean findItem(DataModel item) {
+            return list.contains(item);
         }
     }
 
