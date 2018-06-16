@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         for (DataModel schema: schemas) {
             try {
-                System.out.println("Creating "+schema.getName());
+                System.out.println("Creating "+schema.getModelName());
                 schema.create(db);
             }catch (Exception ex){
 

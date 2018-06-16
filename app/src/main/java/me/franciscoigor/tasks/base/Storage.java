@@ -34,7 +34,6 @@ public class Storage {
                 savedData.put(key,(Serializable)values.get(key));
             }
         }
-        System.out.println("Loading "+savedData);
     }
 
     public static void saveStorage(Bundle savedInstance){

@@ -2,6 +2,8 @@ package me.franciscoigor.tasks.base;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +71,7 @@ public class DataModel {
         return getStringValue(FIELD_UUID);
     }
 
-    public String getName() {
+    public String getModelName() {
         return name;
     }
 
@@ -77,8 +79,8 @@ public class DataModel {
     public String toString() {
         return "DataModel." +
                 name + " : " +
-                //" {" + fieldNames +
-                " }  (" + values +
+                //" {" + fieldNames + "} "
+                " (" + values +
                 ")";
     }
 }

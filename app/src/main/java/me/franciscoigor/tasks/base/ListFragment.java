@@ -76,6 +76,7 @@ public abstract class ListFragment extends Fragment {
             mTitle.setText(item.getUuid());
             mDetails.setText(item.toString());
         }
+
     }
 
 
