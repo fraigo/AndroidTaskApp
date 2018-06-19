@@ -1,10 +1,13 @@
 package me.franciscoigor.tasks.base;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -52,5 +55,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
         }
+    }
+
+    public static ArrayList<DataModel> getAll(String tableName) {
+        Cursor cursor= queryItems(tableName, null, null);
+        int count = cursor.getCount();
+        int columns = cursor.getColumnCount();
+        ArrayList<DataModel> models=new ArrayList<DataModel>();
+        for (int i = 0; i < count; i++) {
+            cursor.moveToNext();
+            DataModel model = new DataModel(tableName);
+            for (int j = 0; j < columns; j++) {
+                String col= cursor.getColumnName(j);
+                model.setValue(col, cursor.getString(j));
+                System.out.println(String.format("%d.- %s : %s",j+1 ,col, cursor.getString(j) ));
+            }
+            models.add(model);
+        }
+        System.out.println(models);
+        return models;
+    }
+
+    private static Cursor queryItems(String tableName, String whereClause, String[] whereArgs) {
+        Cursor cursor = database.query(
+                tableName,
+                null, // Columns - null selects all columns
+                whereClause,
+                whereArgs,
+                null, // groupBy
+                null, // having
+                null // orderBy
+        );
+        return cursor;
+    }
+
+    private static ContentValues getContentValues(HashMap<String,String> values) {
+        ContentValues contentValues = new ContentValues();
+        for(String field:values.keySet()){
+            contentValues.put(field, values.get(field));
+        }
+        return contentValues;
+    }
+
+    public static void insert(DataModel item){
+        database.insert(item.getModelName(), null, getContentValues(item.getValues()));
+    }
+
+    public static void update(DataModel item){
+        database.update(item.getModelName(), getContentValues(item.getValues()),
+                DataModel.FIELD_UUID + " = ?",
+                new String[] { item.getUUID() });
+    }
+
+    public static void delete(DataModel item) {
+        database.delete(item.getModelName(),
+                DataModel.FIELD_UUID + " = ?",
+                new String[] { item.getUUID() });
     }
 }

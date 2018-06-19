@@ -1,6 +1,7 @@
 package me.franciscoigor.tasks.base;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.widget.TextView;
@@ -10,11 +11,13 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
+import me.franciscoigor.tasks.models.TaskModel;
+
 public class DataModel {
     private String name;
     private ArrayList<String> fieldNames;
     private HashMap<String,String> values;
-    private static final String FIELD_UUID = "uuid";
+    public static final String FIELD_UUID = "uuid";
 
     public DataModel(String name){
         this.name =name;
@@ -36,22 +39,9 @@ public class DataModel {
         db.execSQL(sqlCreate);
     }
 
-    private static ContentValues getContentValues(HashMap<String,String> values) {
-        ContentValues contentValues = new ContentValues();
-        for(String field:values.keySet()){
-            contentValues.put(field, values.get(field));
-        }
-        return contentValues;
-    }
 
-    public void insert(SQLiteDatabase db){
-        db.insert(name, null, getContentValues(values));
-    }
-
-    public void update(SQLiteDatabase db){
-        db.update(name, getContentValues(values),
-                FIELD_UUID + " = ?",
-                new String[] { getUuid() });
+    public HashMap<String, String> getValues() {
+        return values;
     }
 
     public void addField(String name){
@@ -59,16 +49,14 @@ public class DataModel {
     }
 
     public void setValue(String field, String value) {
-        if (fieldNames.contains(field)){
-            values.put(field,value);
-        }
+        values.put(field,value);
     }
 
     public String getStringValue(String key){
         return values.get(key);
     }
 
-    public String getUuid() {
+    public String getUUID() {
         return getStringValue(FIELD_UUID);
     }
 
@@ -99,4 +87,6 @@ public class DataModel {
     public int hashCode() {
         return Objects.hash(name, fieldNames, values);
     }
+
+
 }

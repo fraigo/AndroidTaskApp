@@ -52,7 +52,7 @@ public abstract class ListFragment extends Fragment {
     public void updateView(){
 
         if (adapter == null) {
-            adapter = new ItemAdapter();
+            adapter = getAdapter();
             setupAdapter(adapter);
             recyclerView.setAdapter(adapter);
         } else {
@@ -61,8 +61,13 @@ public abstract class ListFragment extends Fragment {
     }
 
     public ItemAdapter getAdapter() {
+        if (adapter == null){
+            return newAdapter();
+        }
         return adapter;
     }
+
+    public abstract ItemAdapter newAdapter();
 
     public class ListItemHolder extends ItemHolder {
 
@@ -76,7 +81,7 @@ public abstract class ListFragment extends Fragment {
 
         @Override
         public void bind(DataModel item) {
-            mTitle.setText(item.getUuid());
+            mTitle.setText(item.getUUID());
             mDetails.setText(item.toString());
         }
 
@@ -87,12 +92,13 @@ public abstract class ListFragment extends Fragment {
 
         private ArrayList<DataModel> list;
 
-        public ItemAdapter() {
-            list = new ArrayList<DataModel>();
+        public ItemAdapter(String name) {
+            list = loadItems(name);
         }
 
         public void addItem(DataModel item){
             list.add(item);
+            DatabaseHelper.insert(item);
         }
 
         @Override
@@ -114,6 +120,31 @@ public abstract class ListFragment extends Fragment {
 
         public boolean findItem(DataModel item) {
             return list.contains(item);
+        }
+
+        public ArrayList<DataModel> loadItems(String name) {
+            return DatabaseHelper.getAll(name);
+        }
+
+
+        public void updateItem(DataModel item) {
+            DatabaseHelper.update(item);
+            int pos=list.indexOf(item);
+            if (pos==-1){
+                this.notifyDataSetChanged();
+            }else{
+                this.notifyItemChanged(pos);
+            }
+
+        }
+
+        public void deleteItem(DataModel item){
+            int pos=list.indexOf(item);
+            if (pos>-1){
+                list.remove(pos);
+                this.notifyItemRemoved(pos);
+                DatabaseHelper.delete(item);
+            }
         }
     }
 

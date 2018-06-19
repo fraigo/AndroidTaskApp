@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import me.franciscoigor.tasks.R;
 import me.franciscoigor.tasks.base.DatabaseHelper;
-import me.franciscoigor.tasks.base.ListFragment;
 import me.franciscoigor.tasks.base.SingleFragmentActivity;
 import me.franciscoigor.tasks.models.TaskModel;
 
@@ -27,7 +26,7 @@ public class MainActivity extends SingleFragmentActivity {
             public void onClick(View v) {
                 FragmentManager manager = getSupportFragmentManager();
                 TaskDialogFragment dialog = TaskDialogFragment.newInstance(new TaskModel());
-                dialog.show(manager, "date");
+                dialog.show(manager,  TaskDialogFragment.DIALOG_ITEM);
             }
         });
 

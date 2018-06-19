@@ -9,9 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
-
-import me.franciscoigor.tasks.R;
 
 public abstract class ItemDialogFragment extends DialogFragment {
 
@@ -71,7 +68,7 @@ public abstract class ItemDialogFragment extends DialogFragment {
         }
         System.out.println("Sending result");
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_MESSAGE, item.getUuid());
+        intent.putExtra(EXTRA_MESSAGE, item.getUUID());
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, intent);
     }

@@ -3,11 +3,13 @@ package me.franciscoigor.tasks.controllers;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import me.franciscoigor.tasks.R;
 import me.franciscoigor.tasks.base.DataModel;
-import me.franciscoigor.tasks.base.ItemDialogFragment;
 import me.franciscoigor.tasks.base.ItemHolder;
 import me.franciscoigor.tasks.base.ListFragment;
 import me.franciscoigor.tasks.models.TaskModel;
@@ -32,10 +34,18 @@ public class TaskListFragment extends ListFragment {
     }
 
     @Override
+    public ItemAdapter newAdapter() {
+        return new ListFragment.ItemAdapter("tasks");
+    }
+
+    @Override
     protected void setupAdapter(ListFragment.ItemAdapter adapter) {
-        adapter.addItem(new TaskModel("Task1","Desc1"));
-        adapter.addItem(new TaskModel("Task2","Desc2"));
-        //adapter.addItem(new TaskModel("Task3","Desc3"));
+        ArrayList<DataModel> list=adapter.loadItems("tasks");
+        if (list.size()==0){
+            adapter.addItem(new TaskModel("Task1","Desc1"));
+            adapter.addItem(new TaskModel("Task2","Desc2"));
+        }
+
     }
 
     @Override
@@ -46,9 +56,9 @@ public class TaskListFragment extends ListFragment {
     private class TaskItemHolder extends ItemHolder{
 
         TextView mTextName, mTextDescription;
-        TaskModel model;
+        ImageView mDelete;
+        DataModel model;
         private static final int REQUEST_DATE = 0;
-        private static final String DIALOG_DATE = "date";
 
         public TaskItemHolder(View view){
             super(view);
@@ -56,20 +66,28 @@ public class TaskListFragment extends ListFragment {
                 @Override
                 public void onClick(View v) {
                     FragmentManager manager = getFragmentManager();
+                    System.out.println("DIALOG "+model);
                     TaskDialogFragment dialog = TaskDialogFragment.newInstance(model);
                     dialog.setTargetFragment(TaskListFragment.this, REQUEST_DATE);
-                    dialog.show(manager, DIALOG_DATE);
+                    dialog.show(manager, TaskDialogFragment.DIALOG_ITEM);
                 }
             });
             mTextName = view.findViewById(R.id.task_list_item_title);
             mTextDescription = view.findViewById(R.id.task_list_item_description);
+            mDelete = view.findViewById(R.id.task_list_item_delete);
+            mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getAdapter().deleteItem(model);
+                }
+            });
         }
 
         @Override
-        public void bind(DataModel item) {
-            this.model = (TaskModel) item;
-            mTextName.setText(item.getStringValue(TaskModel.FIELD_TITLE));
-            mTextDescription.setText(item.getStringValue(TaskModel.FIELD_DESCRIPTION));
+        public void bind(DataModel model) {
+            this.model=model;
+            mTextName.setText(model.getStringValue(TaskModel.FIELD_TITLE));
+            mTextDescription.setText(model.getStringValue(TaskModel.FIELD_DESCRIPTION));
         }
     }
 

@@ -54,7 +54,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/task_list_item_icon"
+            android:id="@+id/task_list_item_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="14dp"

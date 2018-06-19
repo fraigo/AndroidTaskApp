@@ -15,7 +15,9 @@ import me.franciscoigor.tasks.models.TaskModel;
 
 public class TaskDialogFragment extends ItemDialogFragment {
 
-    public static TaskDialogFragment newInstance(TaskModel item) {
+    public static final String DIALOG_ITEM = "item";
+
+    public static TaskDialogFragment newInstance(DataModel item) {
         Bundle args = new Bundle();
         TaskDialogFragment fragment = new TaskDialogFragment();
         fragment.setItem(item);
@@ -32,6 +34,7 @@ public class TaskDialogFragment extends ItemDialogFragment {
     @Override
     protected void bindDialog(final DataModel item, View v) {
         TextView itemTitle=v.findViewById(R.id.task_dialog_title);
+        System.out.println(item);
         itemTitle.setText(item.getStringValue(TaskModel.FIELD_TITLE));
         itemTitle.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,7 +85,7 @@ public class TaskDialogFragment extends ItemDialogFragment {
             adapter.addItem(item);
             adapter.notifyItemInserted(adapter.getItemCount()-1);
         }else{
-            adapter.notifyDataSetChanged();
+            adapter.updateItem(item);
         }
 
     }
