@@ -39,9 +39,15 @@ public abstract class ItemDialogFragment extends DialogFragment {
 
         bindDialog(item, v);
 
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(getDialogTitle(item))
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -50,6 +56,9 @@ public abstract class ItemDialogFragment extends DialogFragment {
                             }
                         })
                 .create();
+
+
+        return dialog;
     }
 
     public void onDialogResult(DialogInterface dialog, DataModel item) {

@@ -1,5 +1,6 @@
 package me.franciscoigor.tasks.controllers;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -69,6 +70,7 @@ public class TaskListFragment extends ListFragment {
                     System.out.println("DIALOG "+model);
                     TaskDialogFragment dialog = TaskDialogFragment.newInstance(model);
                     dialog.setTargetFragment(TaskListFragment.this, REQUEST_DATE);
+
                     dialog.show(manager, TaskDialogFragment.DIALOG_ITEM);
                 }
             });

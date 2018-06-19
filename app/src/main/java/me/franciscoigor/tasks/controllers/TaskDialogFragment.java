@@ -1,5 +1,6 @@
 package me.franciscoigor.tasks.controllers;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import me.franciscoigor.tasks.models.TaskModel;
 public class TaskDialogFragment extends ItemDialogFragment {
 
     public static final String DIALOG_ITEM = "item";
+    private DataModel item;
 
     public static TaskDialogFragment newInstance(DataModel item) {
         Bundle args = new Bundle();
@@ -32,9 +34,24 @@ public class TaskDialogFragment extends ItemDialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        enableOkButton();
+    }
+
+    private void enableOkButton(){
+        AlertDialog dialog=(AlertDialog)this.getDialog();
+
+        String title=item.getStringValue(TaskModel.FIELD_TITLE);
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(title!= null && title.trim().length()>0);
+    }
+
+    @Override
     protected void bindDialog(final DataModel item, View v) {
+
+        this.item = item;
+
         TextView itemTitle=v.findViewById(R.id.task_dialog_title);
-        System.out.println(item);
         itemTitle.setText(item.getStringValue(TaskModel.FIELD_TITLE));
         itemTitle.addTextChangedListener(new TextWatcher() {
             @Override
@@ -49,7 +66,7 @@ public class TaskDialogFragment extends ItemDialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                enableOkButton();
             }
         });
         TextView itemDesc=v.findViewById(R.id.task_dialog_description);
