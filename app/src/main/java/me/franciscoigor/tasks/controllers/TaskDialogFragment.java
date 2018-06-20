@@ -1,17 +1,34 @@
 package me.franciscoigor.tasks.controllers;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import me.franciscoigor.tasks.R;
 import me.franciscoigor.tasks.base.DataModel;
 import me.franciscoigor.tasks.base.ItemDialogFragment;
 import me.franciscoigor.tasks.base.ListFragment;
+import me.franciscoigor.tasks.base.TimeDataPicker;
 import me.franciscoigor.tasks.models.TaskModel;
 
 public class TaskDialogFragment extends ItemDialogFragment {
@@ -50,6 +67,71 @@ public class TaskDialogFragment extends ItemDialogFragment {
     protected void bindDialog(final DataModel item, View v) {
 
         this.item = item;
+
+        final Button taskTime = v.findViewById(R.id.task_dialog_time);
+        taskTime.setText(item.getStringValue(TaskModel.FIELD_TIME));
+        taskTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    final TimeDataPicker newFragment = new TimeDataPicker();
+                    newFragment.setup(taskTime.getText().toString(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            taskTime.setText(newFragment.getSelectedTime());
+                            item.setValue(TaskModel.FIELD_TIME,newFragment.getSelectedTime());
+                        }
+                    });
+                    newFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
+
+
+
+        final String[] days= TaskModel.WEEKDAYS;
+        final String[] items= TaskModel.CATEGORIES;
+        final String[] empty = { "" };
+
+        final Spinner taskSubcategory = v.findViewById(R.id.task_dialog_subcategory);
+        taskSubcategory.setAdapter(new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, R.id.item_data, days ));
+        taskSubcategory.setSelection(Arrays.asList(days).indexOf(item.getStringValue(TaskModel.FIELD_SUBCATEGORY)));
+        taskSubcategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                item.setValue(TaskModel.FIELD_SUBCATEGORY, days[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        final Spinner taskCategory = v.findViewById(R.id.task_dialog_category);
+        taskCategory.setAdapter(new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, R.id.item_data, items ));
+        taskCategory.setSelection(Arrays.asList(items).indexOf(item.getStringValue(TaskModel.FIELD_CATEGORY)));
+        taskCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                item.setValue(TaskModel.FIELD_CATEGORY, items[position]);
+                if (items[position].equals(TaskModel.CATEGORY_WEEKLY)){
+                    taskSubcategory.setAdapter(new ArrayAdapter<String>(TaskDialogFragment.this.getContext(), R.layout.spinner_item, R.id.item_data, days ));
+                    taskSubcategory.setSelection(0);
+                    item.setValue(TaskModel.FIELD_SUBCATEGORY, days[0]);
+                }else{
+                    taskSubcategory.setAdapter(new ArrayAdapter<String>(TaskDialogFragment.this.getContext(), R.layout.spinner_item, R.id.item_data, empty ));
+                    item.setValue(TaskModel.FIELD_SUBCATEGORY, "");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         TextView itemTitle=v.findViewById(R.id.task_dialog_title);
         itemTitle.setText(item.getStringValue(TaskModel.FIELD_TITLE));

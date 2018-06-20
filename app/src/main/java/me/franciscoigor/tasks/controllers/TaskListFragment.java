@@ -43,8 +43,8 @@ public class TaskListFragment extends ListFragment {
     protected void setupAdapter(ListFragment.ItemAdapter adapter) {
         ArrayList<DataModel> list=adapter.loadItems("tasks");
         if (list.size()==0){
-            adapter.addItem(new TaskModel("Task1","Desc1"));
-            adapter.addItem(new TaskModel("Task2","Desc2"));
+            adapter.addItem(new TaskModel("Task1","Desc1",TaskModel.CATEGORY_DAILY, "","14:30", false));
+            adapter.addItem(new TaskModel("Task2","Desc2",TaskModel.CATEGORY_WEEKLY, "Saturday", "09:30", false));
         }
 
     }
@@ -56,7 +56,7 @@ public class TaskListFragment extends ListFragment {
 
     private class TaskItemHolder extends ItemHolder{
 
-        TextView mTextName, mTextDescription;
+        TextView mTextName, mTextDescription, mTextCategory;
         ImageView mDelete;
         DataModel model;
         private static final int REQUEST_DATE = 0;
@@ -76,6 +76,7 @@ public class TaskListFragment extends ListFragment {
             });
             mTextName = view.findViewById(R.id.task_list_item_title);
             mTextDescription = view.findViewById(R.id.task_list_item_description);
+            mTextCategory = view.findViewById(R.id.task_list_item_category);
             mDelete = view.findViewById(R.id.task_list_item_delete);
             mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +91,15 @@ public class TaskListFragment extends ListFragment {
             this.model=model;
             mTextName.setText(model.getStringValue(TaskModel.FIELD_TITLE));
             mTextDescription.setText(model.getStringValue(TaskModel.FIELD_DESCRIPTION));
+            String category = model.getStringValue(TaskModel.FIELD_CATEGORY);
+            mTextCategory.setText(category);
+            if (category.equals(TaskModel.CATEGORY_DAILY)){
+                mTextCategory.setText(category + " at " + model.getStringValue(TaskModel.FIELD_TIME));
+            }
+            if (category.equals(TaskModel.CATEGORY_WEEKLY)){
+                mTextCategory.setText(category + " on " + model.getStringValue(TaskModel.FIELD_SUBCATEGORY) + " at " + model.getStringValue(TaskModel.FIELD_TIME));
+            }
+
         }
     }
 

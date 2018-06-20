@@ -29,14 +29,30 @@
                 android:id="@+id/task_list_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="2dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="6dp"
                 android:text="TextView"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/task_list_item_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:text="Daily"
+                android:textSize="12sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/task_list_item_description"
@@ -48,7 +64,9 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
-                android:text="TextView" />
+                android:layout_weight="1"
+                android:text="Description"
+                android:textSize="12sp" />
 
 
         </LinearLayout>
@@ -58,7 +76,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="14dp"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@android:drawable/ic_notification_clear_all" />
 
     </LinearLayout>
 

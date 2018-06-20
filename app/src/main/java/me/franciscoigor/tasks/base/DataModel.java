@@ -52,8 +52,16 @@ public class DataModel {
         values.put(field,value);
     }
 
+    public void setValue(String field, boolean value) {
+        values.put(field,value ? "1" : "0");
+    }
+
     public String getStringValue(String key){
         return values.get(key);
+    }
+
+    public boolean getBooleanValue(String key){
+        return "1".equals(values.get(key));
     }
 
     public String getUUID() {

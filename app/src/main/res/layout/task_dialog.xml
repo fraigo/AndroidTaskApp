@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
 
     <View
         android:id="@+id/divider2"
@@ -22,6 +29,41 @@
         android:inputType="textPersonName"
         android:text="Name" />
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/task_dialog_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Spinner
+            android:id="@+id/task_dialog_subcategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time" />
+
+    <Button
+        android:id="@+id/task_dialog_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="21:23" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,4 +77,7 @@
         android:inputType="textPersonName"
         android:text="Name" />
 
+
+
 </LinearLayout>
+</ScrollView>
