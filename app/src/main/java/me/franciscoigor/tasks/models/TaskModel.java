@@ -52,15 +52,7 @@ public class TaskModel extends DataModel {
 
 
     public TaskModel(){
-        super("tasks");
-        addField(FIELD_TITLE);
-        addField(FIELD_DESCRIPTION);
-        addField(FIELD_CATEGORY);
-        addField(FIELD_SUBCATEGORY);
-        addField(FIELD_FINISHED);
-        addField(FIELD_TIME);
-
-        setValue(FIELD_TIME, "08:00");
+        this(null, null, null, null, "08:00", false);
     }
 
     public TaskModel(String title, String description, String category, String subcategory, String time, boolean finished){

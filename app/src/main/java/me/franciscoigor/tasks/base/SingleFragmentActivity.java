@@ -20,7 +20,6 @@ public abstract class SingleFragmentActivity extends android.support.v4.app.Frag
         setContentView(R.layout.activity_fragment);
         // Restore instance state
         Storage.loadStorage(savedInstanceState, this);
-        Storage.addInt("TEST",1);
         // Setup database
         addSchemas();
         DatabaseHelper.getDatabase(this.getApplicationContext());
@@ -33,7 +32,7 @@ public abstract class SingleFragmentActivity extends android.support.v4.app.Frag
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Storage.addInt("TEST",1);
+
         // Save instance
         Storage.saveStorage(savedInstanceState);
     }

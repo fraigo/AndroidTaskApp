@@ -146,6 +146,10 @@ public abstract class ListFragment extends Fragment {
                 DatabaseHelper.delete(item);
             }
         }
+
+        public ArrayList<DataModel> findItems(String table, String where, String[] whereArgs){
+            return DatabaseHelper.getItems(table, where, whereArgs);
+        }
     }
 
     protected int getItemHolderLayout(){

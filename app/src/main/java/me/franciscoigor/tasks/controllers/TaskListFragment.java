@@ -43,10 +43,11 @@ public class TaskListFragment extends ListFragment {
     protected void setupAdapter(ListFragment.ItemAdapter adapter) {
         ArrayList<DataModel> list=adapter.loadItems("tasks");
         if (list.size()==0){
-            adapter.addItem(new TaskModel("Task1","Desc1",TaskModel.CATEGORY_DAILY, "","14:30", false));
-            adapter.addItem(new TaskModel("Task2","Desc2",TaskModel.CATEGORY_WEEKLY, "Saturday", "09:30", false));
+            adapter.addItem(new TaskModel("Example task","Description of task",TaskModel.CATEGORY_WEEKLY, TaskModel.WEEKDAY_SUNDAY,"09:00", false));
         }
-
+        ArrayList<DataModel> filtered=adapter.findItems("tasks", String.format("%s <> '%s'", TaskModel.FIELD_FINISHED,"1"),new String[0]);
+        System.out.println(filtered);
+        NotifierActivity.notifyUser(this.getContext(), "Pending tasks", String.format("%d pending tasks for today", filtered.size()));
     }
 
     @Override
