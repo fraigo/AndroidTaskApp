@@ -57,7 +57,7 @@ public class TaskListFragment extends ListFragment {
     private class TaskItemHolder extends ItemHolder{
 
         TextView mTextName, mTextDescription, mTextCategory;
-        ImageView mDelete;
+        ImageView mDelete, mIcon;
         DataModel model;
         private static final int REQUEST_DATE = 0;
 
@@ -84,6 +84,16 @@ public class TaskListFragment extends ListFragment {
                     getAdapter().deleteItem(model);
                 }
             });
+            mIcon = view.findViewById(R.id.task_list_item_status);
+            mIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    model.setValue(TaskModel.FIELD_FINISHED, !model.getBooleanValue(TaskModel.FIELD_FINISHED));
+                    getAdapter().updateItem(model);
+                }
+            });
+
+
         }
 
         @Override
@@ -98,6 +108,11 @@ public class TaskListFragment extends ListFragment {
             }
             if (category.equals(TaskModel.CATEGORY_WEEKLY)){
                 mTextCategory.setText(category + " on " + model.getStringValue(TaskModel.FIELD_SUBCATEGORY) + " at " + model.getStringValue(TaskModel.FIELD_TIME));
+            }
+            if (model.getBooleanValue(TaskModel.FIELD_FINISHED)){
+                mIcon.setImageResource(android.R.drawable.checkbox_on_background);
+            }else{
+                mIcon.setImageResource(android.R.drawable.checkbox_off_background);
             }
 
         }

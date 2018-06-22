@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -119,9 +121,11 @@ public class TaskDialogFragment extends ItemDialogFragment {
                     taskSubcategory.setAdapter(new ArrayAdapter<String>(TaskDialogFragment.this.getContext(), R.layout.spinner_item, R.id.item_data, days ));
                     taskSubcategory.setSelection(0);
                     item.setValue(TaskModel.FIELD_SUBCATEGORY, days[0]);
+                    taskSubcategory.setEnabled(true);
                 }else{
                     taskSubcategory.setAdapter(new ArrayAdapter<String>(TaskDialogFragment.this.getContext(), R.layout.spinner_item, R.id.item_data, empty ));
                     item.setValue(TaskModel.FIELD_SUBCATEGORY, "");
+                    taskSubcategory.setEnabled(false);
                 }
 
             }
@@ -129,6 +133,15 @@ public class TaskDialogFragment extends ItemDialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        final CheckBox checkBox= v.findViewById(R.id.task_dialog_finished);
+        checkBox.setChecked(item.getBooleanValue(TaskModel.FIELD_FINISHED));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                item.setValue(TaskModel.FIELD_FINISHED, isChecked);
             }
         });
 
